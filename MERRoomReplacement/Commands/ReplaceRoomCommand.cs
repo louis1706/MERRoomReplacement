@@ -2,9 +2,9 @@
 using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.Permissions.Extensions;
-using MapEditorReborn.API.Features;
 using MERRoomReplacement.Api;
 using MERRoomReplacement.Api.Structures;
+using ProjectMER.Features;
 
 // ReSharper disable HeuristicUnreachableCode
 // ReSharper disable ConditionIsAlwaysTrueOrFalse

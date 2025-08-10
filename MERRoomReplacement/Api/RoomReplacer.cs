@@ -2,12 +2,10 @@
 using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using MapEditorReborn.API;
-using MapEditorReborn.API.Features;
-using MapEditorReborn.API.Features.Objects;
-using MapEditorReborn.API.Features.Serializable;
 using MEC;
 using MERRoomReplacement.Api.Structures;
+using ProjectMER.Features;
+using ProjectMER.Features.Objects;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -47,14 +45,11 @@ public static class RoomReplacer
         
         DestroyRoom(room);
         
-        var schematicSerializable = new SchematicSerializable(roomSchematic.SchematicName);
         var rotation = Quaternion.Euler(schematicRotation + room.transform.localRotation.eulerAngles);
-        var schematic = ObjectSpawner.SpawnSchematic(schematicSerializable, schematicPosition, rotation);
+        var schematic = ObjectSpawner.SpawnSchematic(roomSchematic.SchematicName, schematicPosition, rotation, Vector3.one);
         schematic.Position += schematicPosition;
         
         Log.Debug($"[{roomType}->{roomSchematic.SchematicName}] Schematic spawned at {schematic.Position}");
-        
-        API.SpawnedObjects.Add(schematic);
 
         var roomDetails = new CachedRoom(room.Position, room.Rotation.eulerAngles, schematic);
 
@@ -135,13 +130,8 @@ public static class RoomReplacer
         schematicRotation += cachedRoomData.Rotation;
 
         cachedRoomData.Schematic.Destroy();
-        API.SpawnedObjects.Remove(cachedRoomData.Schematic);
-        
-        var schematic = new SchematicSerializable(roomSchematic.SchematicName);
-        
-        cachedRoomData.Schematic = ObjectSpawner.SpawnSchematic(schematic,
-            schematicPosition, Quaternion.Euler(schematicRotation));
-        API.SpawnedObjects.Add(cachedRoomData.Schematic);
+                
+        cachedRoomData.Schematic = ObjectSpawner.SpawnSchematic(roomSchematic.SchematicName, schematicPosition, Quaternion.Euler(schematicRotation));
 
         return false;
     }
